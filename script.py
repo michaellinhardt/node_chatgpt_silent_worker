@@ -50,23 +50,27 @@ def main():
         # Generate and execute a script based on the user's instruction
         elif user_input.startswith("!script"):
             instruction = user_input[len("!script"):].strip()
-            
-            # Check if an instruction is provided
+
             if not instruction:
-                print("Error: The !script command requires an argument.")
+                print("Error: !script requires an argument.")
                 continue
-            
-            print("Generating script...")
-            prompt = f"Write a Python script with detailed commentary. Implement in the script a simple log output that writes in a txt file in the same folder. The log file purpose is to track and understand what happens when the script is executed. Only output the script without anything else. I will now describe what the script should do: {instruction}"
-            generated_script = chatgpt_request(prompt)
-            
-            print("Saving generated script as 'silentWorker.py'...")
+
+            prompt = f"Write a Python script with detailed commentary. Implement in the script a simple log output that writes to a txt file in the same folder. The log file's purpose is to track and understand what happens when the script is executed. Only output the script without anything else. The script should perform the following task: {instruction}"
+            print("Requesting script from ChatGPT...")
+            response = chatgpt_request(prompt)
+
+            print("Response from ChatGPT:")
+            print(response)  # Output ChatGPT answer in the terminal
+
             with open("silentWorker.py", "w") as f:
-                f.write(generated_script)
-            
-            print("Executing 'silentWorker.py'...")
-            os.system("python silentWorker.py")
-            print("Execution finished.")
+                f.write(response)
+
+            print("Executing silentWorker.py...")
+            result = subprocess.run(["python", "silentWorker.py"], capture_output=True, text=True)
+            print("silentWorker.py execution finished.")
+            print("Output:")
+            print(result.stdout)
+            print(result.stderr)
         
         # Re-execute the last generated silentWorker.py
         elif user_input == "!rexec":
