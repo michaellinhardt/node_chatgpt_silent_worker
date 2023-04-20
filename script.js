@@ -3,11 +3,7 @@ const readline = require("readline");
 const { exec } = require("child_process");
 const axios = require("axios");
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 const CHATGPT_API_KEY = "your-chatgpt-api-key-here";
 
 const helpText = `
@@ -17,29 +13,27 @@ Commands:
   !help         Display this help text.
   !script       Concatenate the instruction with a predefined message and send it to ChatGPT.
                 Requires an argument (instruction).
+  !rerun        Re-execute the previously generated silentWorker.js file.
 
 Examples:
   !script write a script that reads column A from an excel file and add in column B the value A/2
 `;
 
-function sendToChatGPT(instruction) {
-  return axios.post(
+const sendToChatGPT = (instruction) =>
+  axios.post(
     "https://api.openai.com/v1/engines/davinci-codex/completions",
-    {
-      prompt: instruction,
-      max_tokens: 200,
-      n: 1,
-      stop: null,
-      temperature: 0.7,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${CHATGPT_API_KEY}`,
-      },
-    }
+    { prompt: instruction, max_tokens: 200, n: 1, stop: null, temperature: 0.7 },
+    { headers: { "Content-Type": "application/json", Authorization: `Bearer ${CHATGPT_API_KEY}` } }
   );
-}
+
+const executeScript = (scriptPath) =>
+  new Promise((resolve, reject) => {
+    exec(`node ${scriptPath}`, (error, stdout, stderr) => {
+      if (error) reject(error);
+      if (stderr) reject(new Error(stderr));
+      resolve(stdout);
+    });
+  });
 
 function processCommand(input) {
   console.log("loading...");
@@ -60,31 +54,29 @@ function processCommand(input) {
         .then((response) => {
           const script = response.data.choices[0].text.trim();
           fs.writeFileSync("silentWorker.js", script);
-          exec("node silentWorker.js", (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Error executing silentWorker.js: ${error.message}`);
-            }
-            if (stderr) {
-              console.error(`Error in silentWorker.js: ${stderr}`);
-            }
-            console.log(stdout);
-            rl.prompt();
-          });
+          return executeScript("silentWorker.js");
+        })
+        .then((stdout) => {
+          console.log(stdout);
+          rl.prompt();
         })
         .catch((error) => {
-          console.error(`Error sending request to ChatGPT: ${error.message}`);
+          console.error(`Error: ${error.message}`);
           rl.prompt();
         });
     }
-  } else {
-    console.error("Error: Unrecognized command.");
-    rl.prompt();
+  } else if (command === "!rerun") {
+    executeScript("silentWorker.js")
+      .then((stdout) => {
+        console.log(stdout);
+        rl.prompt();
+      })
+      .catch((error) => {
+        console.error(`Error: ${error.message}`);
+        rl.prompt();
+      });
   }
 }
 
-rl.on("line", (input) => {
-  processCommand(input);
-});
-
-console.log("Welcome! Type !help for usage instructions.");
+rl.on("line", processCommand);
 rl.prompt();
