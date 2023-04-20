@@ -59,6 +59,19 @@ def main():
             print("Executing 'silentWorker.py'...")
             os.system("python silentWorker.py")
             print("Execution finished.")
+
+        # Chat with ChatGPT
+        elif user_input.startswith("!chat"):
+            message = user_input[len("!chat"):].strip()
+
+            if not message:
+                print("Error: The !chat command requires a message.")
+                continue
+            
+            print("Sending message to ChatGPT...")
+            response = chatgpt_request(message)
+            print("Response from ChatGPT:")
+            print(response)
         
         # Re-execute the last generated silentWorker.py
         elif user_input == "!rexec":
