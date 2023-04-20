@@ -18,14 +18,20 @@ openai.api_key = CHATGPT_API_KEY
 # Function to send a request to ChatGPT with the given prompt
 def chatgpt_request(prompt):
     response = openai.Completion.create(
-        engine="text-davinci-codex",  # Updated to a better model
+        engine="text-davinci-002",
         prompt=prompt,
         max_tokens=150,
         n=1,
         stop=None,
-        temperature=0.5,  # Reduced temperature for less randomness
+        temperature=0.5,
     )
-    return response.choices[0].text.strip()
+    text = response.choices[0].text.strip()
+
+    # Remove the "message." part from the response
+    if text.startswith("message."):
+        text = text[len("message."):].strip()
+
+    return text
 
 def main():
     print("Welcome to the ChatGPT Terminal Interface!")
