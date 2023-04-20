@@ -60,6 +60,15 @@ def main():
             os.system("python silentWorker.py")
             print("Execution finished.")
         
+        # Re-execute the last generated silentWorker.py
+        elif user_input == "!rexec":
+            if os.path.exists("silentWorker.py"):
+                print("Re-executing 'silentWorker.py'...")
+                os.system("python silentWorker.py")
+                print("Execution finished.")
+            else:
+                print("Error: 'silentWorker.py' not found. Generate a script first using the !script command.")
+
         else:
             print("Invalid command. Type !help for available commands.")
 
