@@ -18,6 +18,7 @@ cd chatgpt-terminal`
 2. Install the required dependencies:
 
 `pip install requests`
+```pip install openai```
 
 3. Set up the ChatGPT API key as an environment variable:
 

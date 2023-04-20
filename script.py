@@ -1,7 +1,7 @@
 import sys
 import os
 import subprocess
-import requests
+import openai
 from getpass import getpass
 
 CHATGPT_API_KEY = os.environ.get("CHATGPT_API_KEY")
@@ -12,20 +12,20 @@ if CHATGPT_API_KEY is None:
     print("Visit the project repository for instructions: https://github.com/yourusername/chatgpt-terminal")
     sys.exit(1)
 
+# Set up the OpenAI library with your API key
+openai.api_key = CHATGPT_API_KEY
+
 # Function to send a request to ChatGPT with the given prompt
 def chatgpt_request(prompt):
-    url = "https://api.openai.com/v1/engines/davinci-codex/completions"
-    headers = {"Authorization": f"Bearer {CHATGPT_API_KEY}"}
-    data = {
-        "prompt": prompt,
-        "max_tokens": 100,
-        "n": 1,
-        "stop": None,
-        "temperature": 0.5,
-    }
-    response = requests.post(url, headers=headers, json=data)
-    response.raise_for_status()
-    return response.json()["choices"][0]["text"].strip()
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=150,
+        n=1,
+        stop=None,
+        temperature=0.8,
+    )
+    return response.choices[0].text.strip()
 
 def main():
     print("Welcome to the ChatGPT Terminal Interface!")
