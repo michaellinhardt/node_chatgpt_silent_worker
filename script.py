@@ -4,7 +4,7 @@ import subprocess
 import requests
 from getpass import getpass
 
-CHATGPT_API_KEY = "your-chatgpt-api-key-here"
+CHATGPT_API_KEY = os.environ.get("CHATGPT_API_KEY")
 
 # Function to send a request to ChatGPT with the given prompt
 def chatgpt_request(prompt):
