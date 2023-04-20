@@ -18,12 +18,12 @@ openai.api_key = CHATGPT_API_KEY
 # Function to send a request to ChatGPT with the given prompt
 def chatgpt_request(prompt):
     response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="text-davinci-codex",  # Updated to a better model
         prompt=prompt,
         max_tokens=150,
         n=1,
         stop=None,
-        temperature=0.8,
+        temperature=0.5,  # Reduced temperature for less randomness
     )
     return response.choices[0].text.strip()
 
@@ -76,17 +76,15 @@ def main():
             message = user_input.strip()
 
             if not message:
-                print("Error: Please enter a message or a valid command.")
-                continue
+                continue  # Do not print log output in the terminal when user doesn't type a command
 
             conversation_history.append(f"User: {message}")
 
             context = "\n".join(conversation_history)
-            print("Sending message to ChatGPT...")
             response = chatgpt_request(context)
             conversation_history.append(f"ChatGPT: {response}")
 
-            print("Response from ChatGPT:")
+            print("\nResponse from ChatGPT:")  # Added a blank line before the response
             print(response)
 
 if __name__ == "__main__":
