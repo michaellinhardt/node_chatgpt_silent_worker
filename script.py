@@ -6,6 +6,11 @@ from getpass import getpass
 
 CHATGPT_API_KEY = os.environ.get("CHATGPT_API_KEY")
 
+# Check if the API key is set, and output an error and stop the script if not
+if CHATGPT_API_KEY is None:
+    print("Error: The ChatGPT API key is not set. Please set the 'CHATGPT_API_KEY' environment variable.")
+    sys.exit(1)
+
 # Function to send a request to ChatGPT with the given prompt
 def chatgpt_request(prompt):
     url = "https://api.openai.com/v1/engines/davinci-codex/completions"
