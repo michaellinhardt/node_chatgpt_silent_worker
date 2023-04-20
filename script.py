@@ -59,19 +59,6 @@ def main():
             print("Executing 'silentWorker.py'...")
             os.system("python silentWorker.py")
             print("Execution finished.")
-
-        # Chat with ChatGPT
-        elif user_input.startswith("!chat"):
-            message = user_input[len("!chat"):].strip()
-
-            if not message:
-                print("Error: The !chat command requires a message.")
-                continue
-            
-            print("Sending message to ChatGPT...")
-            response = chatgpt_request(message)
-            print("Response from ChatGPT:")
-            print(response)
         
         # Re-execute the last generated silentWorker.py
         elif user_input == "!rexec":
@@ -82,8 +69,18 @@ def main():
             else:
                 print("Error: 'silentWorker.py' not found. Generate a script first using the !script command.")
 
+        # Chat with ChatGPT
         else:
-            print("Invalid command. Type !help for available commands.")
+            message = user_input.strip()
+
+            if not message:
+                print("Error: Please enter a message or a valid command.")
+                continue
+            
+            print("Sending message to ChatGPT...")
+            response = chatgpt_request(message)
+            print("Response from ChatGPT:")
+            print(response)
 
 if __name__ == "__main__":
     main()
