@@ -29,7 +29,9 @@ def chatgpt_request(prompt):
 
 def main():
     print("Welcome to the ChatGPT Terminal Interface!")
-    
+
+    conversation_history = []
+
     while True:
         user_input = input("> ")
 
@@ -76,9 +78,14 @@ def main():
             if not message:
                 print("Error: Please enter a message or a valid command.")
                 continue
-            
+
+            conversation_history.append(f"User: {message}")
+
+            context = "\n".join(conversation_history)
             print("Sending message to ChatGPT...")
-            response = chatgpt_request(message)
+            response = chatgpt_request(context)
+            conversation_history.append(f"ChatGPT: {response}")
+
             print("Response from ChatGPT:")
             print(response)
 
