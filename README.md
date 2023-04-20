@@ -1,47 +1,64 @@
+ChatGPT Terminal Interface
+==========================
 
-# NodeJS ChatGPT Terminal Interface
+This project provides a Python terminal interface for interacting with OpenAI's ChatGPT.
 
-This project provides a NodeJS terminal interface for interacting with OpenAI's ChatGPT.
+Features
+--------
 
-## Note from Mike
+-   Get script suggestions from ChatGPT
+-   Write and execute generated scripts
+-   Extensible command system
 
-"Everything is written by ChatGPT, even this README file.
-You can find in each commit description, the chat typed for the cahnges obtained."
+Installation
+------------
 
-## Features
+1.  Clone the repository:
 
-- Get script generated from ChatGPT
-- Write and execute generated scripts
-- Re-execute previously generated scripts
-- Extensible command system
+bashCopy code
 
-## Installation
+`git clone https://github.com/yourusername/chatgpt-terminal.git
+cd chatgpt-terminal`
 
-1. Clone the repository:
+1.  Install the required dependencies:
 
-```git clone <https://github.com/michaellinhardt/node_chatgpt_silent_worker>
-cd node_chatgpt_silent_worker```
+Copy code
 
-2. Install the required dependencies:
+`pip install requests`
 
-```npm install```
+1.  Add your ChatGPT API key to `script.py`:
 
-Add your ChatGPT API key to script.js:
+pythonCopy code
 
-```const CHATGPT_API_KEY = "your-chatgpt-api-key-here";```
+`CHATGPT_API_KEY = "your-chatgpt-api-key-here"`
 
-Run the script:
+1.  Run the script:
 
-```node script.js```
+Copy code
 
-## Usage
+`python script.py`
+
+Usage
+-----
 
 Enter one of the following commands in the terminal:
 
-!help: Display the help text.
-!script: Concatenate the instruction with a predefined message and send it to ChatGPT. Requires an argument (instruction).
-!rerun: Re-execute the previously generated silentWorker.js file.
+-   `!help`: Display the help text.
+-   `!script`: Generates a script with the provided instruction.
+-   `!help`: Displays the help text.
 
 For example:
 
-```node script.js !script reads column A from an excel file and add in column B the value A/2```
+cssCopy code
+
+`!script write a script that reads column A from an excel file and adds in column B the value A/2`
+
+Contributing
+------------
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+License
+-------
+
+[MIT](https://choosealicense.com/licenses/mit/)
